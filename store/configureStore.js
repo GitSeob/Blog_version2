@@ -6,16 +6,15 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import reducer from '../reducers';
 import rootSaga from '../sagas';
 
-import axios from 'axios';
+// import axios from 'axios';
 
-const configureStore = (context) => {
+const configureStore = () => {
 	const sagaMiddleware = createSagaMiddleware();
 	const middlewares = [sagaMiddleware];
-	const enhancer = process.env.NODE_ENV === 'production'
-		? compose(applyMiddleware(...middlewares))
-		: composeWithDevTools(
-			applyMiddleware(...middlewares),
-		);
+	const enhancer =
+		process.env.NODE_ENV === 'production'
+			? compose(applyMiddleware(...middlewares))
+			: composeWithDevTools(applyMiddleware(...middlewares));
 
 	const preloadedState = process.env.__PRELOADED_STATE__;
 
@@ -24,6 +23,8 @@ const configureStore = (context) => {
 	return store;
 };
 
-const wrapper = createWrapper(configureStore, { debug: process.env.NODE_ENV === 'development' });
+const wrapper = createWrapper(configureStore, {
+	debug: process.env.NODE_ENV === 'development',
+});
 
 export default wrapper;
